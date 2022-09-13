@@ -68,6 +68,7 @@ func (m *mkcert) makeCert(hosts []string) {
 		Subject: pkix.Name{
 			Organization:       []string{"mkcert development certificate"},
 			OrganizationalUnit: []string{userAndHostname},
+			CommonName:         "mkcert client " + userAndHostname,
 		},
 
 		NotBefore: time.Now(), NotAfter: expiration,
