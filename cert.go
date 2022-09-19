@@ -32,6 +32,7 @@ import (
 	pkcs12 "software.sslmate.com/src/go-pkcs12"
 )
 
+var hostname string
 var userAndHostname string
 
 const certExpiryDateFormat string = "Mon Jan 2 15:04:05 2006"
@@ -41,8 +42,8 @@ func init() {
 	if err == nil {
 		userAndHostname = u.Username + "@"
 	}
-	if h, err := os.Hostname(); err == nil {
-		userAndHostname += h
+	if hostname, err := os.Hostname(); err == nil {
+		userAndHostname += hostname
 	}
 	if err == nil && u.Name != "" && u.Name != u.Username {
 		userAndHostname += " (" + u.Name + ")"
@@ -68,7 +69,7 @@ func (m *mkcert) makeCert(hosts []string) {
 		Subject: pkix.Name{
 			Organization:       []string{"mkcert development certificate"},
 			OrganizationalUnit: []string{userAndHostname},
-			CommonName:         "mkcert client " + userAndHostname,
+			CommonName:         hostname,
 		},
 
 		NotBefore: time.Now(), NotAfter: expiration,
